@@ -14,16 +14,18 @@ var initGame = function () {
     var stage = new createjs.Stage(canvas);
     var ctx = canvas.getContext("2d");
     var uploadButton = document.getElementById("fileUpload");
-    var nCol = 4;
-    var nRow = 4;
+    var nCol = 2;
+    var nRow = 2;
     var pieceWidth;
     var pieceHeight;
     var piecesArray = [];
     var hRatio;
     var vRatio;
     var ratio;
+    var scaledPieceWidth;
+    var scaledPieceHeight;
 
-    var loadImage = function() {
+    var loadImage = function () {
         refresh();
         if (this.files && this.files[0]) {
             var fileReader = new FileReader();
@@ -44,7 +46,7 @@ var initGame = function () {
 
     };
 
-    var scaleImage = function(bitmap) {
+    var scaleImage = function (bitmap) {
         hRatio = canvas.width / bitmap.image.width;
         vRatio = canvas.height / bitmap.image.height;
         ratio = Math.min(hRatio, vRatio);
@@ -54,20 +56,28 @@ var initGame = function () {
         stage.height = canvas.height;
         bitmap.scaleX = stage.width/ bitmap.image.width;
         bitmap.scaleY = stage.height/bitmap.image.height;
-        pieceWidth = Math.round(canvas.width / nCol);
-        pieceHeight = Math.round(canvas.height / nRow);
+        pieceWidth = Math.round(bitmap.image.width / nCol);
+        pieceHeight = Math.round(bitmap.image.height / nRow);
     };
 
-    var buildPuzzle = function(imageObj) {
+    /**
+     * Breaking an image into pieces.
+     * @param imageObj
+     */
+    var buildPuzzle = function (imageObj) {
         var l = nCol * nRow;
         var i, piece;
         var col = 0;
         var row = 0;
+        scaledPieceWidth =   Math.round(canvas.width / nCol);
+        scaledPieceHeight =  Math.round(canvas.height / nRow);
         for (i = 0; i < l; i++) {
             piece = new createjs.Bitmap(imageObj);
             piece.sourceRect = new createjs.Rectangle(col * pieceWidth, row * pieceHeight, pieceWidth, pieceHeight);
-            piece.homePoint = {x: col * pieceWidth,
-                y: row * pieceHeight};
+            piece.scaleX = scaledPieceWidth / pieceWidth;
+            piece.scaleY = scaledPieceHeight / pieceHeight;
+            piece.homePoint = {x: col * scaledPieceWidth,
+                y: row * scaledPieceHeight};
             piece.x = piece.homePoint.x;
             piece.y = piece.homePoint.y;
             stage.addChild(piece);
@@ -80,18 +90,20 @@ var initGame = function () {
         }
     };
 
-    var shufflePuzzle = function() {
+    /**
+     * Shuffling the image pieces
+     */
+    var shufflePuzzle = function () {
         var i, piece, randomIndex;
         var col = 0;
         var row = 0;
         var p = [];
         p = p.concat(piecesArray);
+        shuffleArray(p);
         var l = p.length;
         for (i = 0; i < l; i++) {
-            randomIndex = Math.floor(Math.random() * p.length);
-            piece = p[randomIndex];
-            p.splice[randomIndex, 1];
-            createjs.Tween.get(piece).to({x: col * pieceWidth, y: row * pieceHeight});
+            piece = p[i];
+            createjs.Tween.get(piece).to({x: col * scaledPieceWidth, y: row * scaledPieceHeight});
             col++;
             if (col == nCol) {
                 col = 0;
@@ -100,7 +112,24 @@ var initGame = function () {
         }
     };
 
-    var refresh = function(){
+    /**
+     * Shuffling the given array.
+     * @param a
+     */
+    var shuffleArray = function (a) {
+        var j, x, i;
+        for (i = a.length; i; i -= 1) {
+            j = Math.floor(Math.random() * i);
+            x = a[i - 1];
+            a[i - 1] = a[j];
+            a[j] = x;
+        }
+    }
+
+    /**
+     * Refreshing the canvas.
+     */
+    var refresh = function (){
         stage.removeAllChildren();
         stage.update();
         canvas.width = 500;
@@ -109,7 +138,7 @@ var initGame = function () {
         stage.height = canvas.height;
     }
 
-    function startGame() {
+    var startGame = function () {
         createjs.Ticker.addEventListener("tick", function () {
             stage.update();
         });
