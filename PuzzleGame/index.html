@@ -1,18 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+	<title>Puzzle Game</title>
+	
     <link rel="stylesheet" href="css/styles.css">
     <script src="js/imageProcessor.js"></script>
     <script type="text/javascript" src="js/easeljs.js"></script>
     <script type="text/javascript" src="js/tweenjs.js"></script>
-
 </head>
 
-<body onload="init();">
+<body onload="init();" style="background-color:lightgrey;">
 
-<canvas id="canvas" width="500" height="500"></canvas>
-<input type='file' id="fileUpload"/>
+<div id="slider">
+	<div id="tooplate_wrapper">
+        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+        <div id="tooplate_sidebar">
+            <div class = "setting_window">
+                <canvas id="canvasThumbnail" width="200" height="200"></canvas>
+                <br>
+                <input type='file' id="fileUpload" style="display: none"/>
+                <input type="button" value="Choose File" onclick="document.getElementById('fileUpload').click();" />
+
+                <br>
+                <span>Number of swaps : </span><input type='text' id="moves" disabled />
+            </div>
+		</div>
+
+        <div id="content">
+            <div class = "puzzle_window">
+                <canvas id="canvas" width="500" height="500"></canvas>
+            </div>
+		</div>
+    </div>
+</div>
 
 </body>
 

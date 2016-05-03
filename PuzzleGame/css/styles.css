@@ -14,11 +14,41 @@ canvas {
     margin-bottom: 5px;
 }
 
-form {
+#canvasThumbnail {
     background: #eee;
+    display: block;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 5px;
-    text-align: center;
-    width: 320px;
+}
+
+#slider {
+    position: relative;
+    width: 100%;
+}
+
+#tooplate_wrapper {
+    width: 954px;
+    height: 753px;
+    margin: 50px auto 20px;
+}
+
+#tooplate_sidebar {
+    float: left;
+    width: 296px;
+    padding: 80px 0 0;
+}
+
+#content {
+    float: right;
+    width: 500px;
+    height: 600px;
+    padding: 80px 100px 80px 0;
+}
+
+.button {
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #000;
+    background: #eee;
 }
