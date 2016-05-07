@@ -1,39 +1,105 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Puzzle Game</title>
-	
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Puzzle Mania</title>
+
+    <link rel="stylesheet" href="css/style2.css" type="text/css" media="screen"/>
     <link rel="stylesheet" href="css/styles.css">
-    <script src="js/imageProcessor.js"></script>
+
+    <script type="text/javascript" src="js/puzzle.js"></script>
     <script type="text/javascript" src="js/easeljs.js"></script>
     <script type="text/javascript" src="js/tweenjs.js"></script>
 </head>
-
-<body onload="init();" style="background-color:lightgrey;">
-
-<div id="slider">
-	<div id="tooplate_wrapper">
-        <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
-        <div id="tooplate_sidebar">
-            <div class = "setting_window">
-                <canvas id="canvasThumbnail" width="200" height="200"></canvas>
-                <br>
-                <input type='file' id="fileUpload" style="display: none"/>
-                <input type="button" value="Choose File" onclick="document.getElementById('fileUpload').click();" />
-
-                <br>
-                <span>Number of swaps : </span><input type='text' id="moves" disabled />
+<body onload="init();">
+<div id="art-main">
+    <div class="art-header">
+        <div class="art-header-clip">
+            <div class="art-header-center">
+                <div class="art-header-png"></div>
+                <div class="art-header-jpeg"></div>
             </div>
-		</div>
+        </div>
+        <div class="art-header-wrapper">
+            <div class="art-header-inner">
+                <div class="art-logo">
+                    <h1 class="art-logo-name"><a href="./index.html">Puzzle Mania</a></h1>
 
-        <div id="content">
-            <div class = "puzzle_window">
-                <canvas id="canvas" width="500" height="500"></canvas>
+                    <h2 class="art-logo-text">Test your puzzle solving skills</h2>
+                </div>
             </div>
-		</div>
+        </div>
     </div>
+
+    <div class="art-sheet" id="art-sheet">
+        <div class="art-sheet-tl"></div>
+        <div class="art-sheet-tr"></div>
+        <div class="art-sheet-bl"></div>
+        <div class="art-sheet-br"></div>
+        <div class="art-sheet-tc"></div>
+        <div class="art-sheet-bc"></div>
+        <div class="art-sheet-cl"></div>
+        <div class="art-sheet-cr"></div>
+        <div class="art-sheet-cc"></div>
+        <div class="art-sheet-body">
+
+            <div class="cleared"></div>
+            <div class="art-footer">
+                <div class="art-footer-body">
+                    <!-- GAME BODY GOES HERE -->
+                    <div id="platform">
+
+                        <div id = startInputs class = "start_inputs">
+                            <input type='file' id="fileUpload" style="display: none"/>
+                            <span> <b>Choose any image to begin         </b></span>
+                            <input type="button" value="Choose Image" class="button_left" onclick="document.getElementById('fileUpload').click();" />
+                        </div>
+
+                        <br>
+
+                        <div id = "timer" class = "timer" style="display: none">
+                            <span> <b>Number of Swaps :  </b></span>
+                            <span id="swaps"> 0 </span>
+
+                            <br>
+							<br>
+                            <span> <b>Time Elapsed :  </b></span>
+                            <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+                        </div>
+
+                        <div id="playArea"  style="display: none">
+                            <div class = "puzzle_window">
+                                <div>
+                                    <canvas id="canvas" width="500" height="500"></canvas>
+                                </div>
+                                <br>
+                            </div>
+
+
+                            <div id = "settings_container" class = "settings">
+                                <br>
+                                <div>
+                                    <input id="preview" type="button" value="Show preview" class="button_right button_preview"/>
+                                    <input id="startOver" type="button" value="Start Over" class="button_right button_restart"/>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="cleared"></div>
+        </div>
+    </div>
+    <div class="cleared"></div>
+
+    <div id = "savedPreview" style="display: none" class = "popup">
+        <canvas id="canvasThumbnail" width="200" height="200"></canvas>
+    </div>
+
 </div>
 
 </body>
-
 </html>

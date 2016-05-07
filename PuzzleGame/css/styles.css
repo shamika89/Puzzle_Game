@@ -46,9 +46,71 @@ canvas {
     padding: 80px 100px 80px 0;
 }
 
-.button {
+.button_left {
+    position: relative;
     display: inline-block;
     padding: 3px 5px;
     border: 1px solid #000;
     background: #eee;
+    top: 5%;
+}
+
+.button_right {
+    position: absolute;
+    display: inline-block;
+    padding: 3px 5px;
+    border: 1px solid #000;
+    background: #eee;
+}
+
+.button_top {
+    top: 85% !important;
+}
+
+.button_preview{
+    top: 173% !important;
+    width: 100px;
+}
+
+.button_restart{
+    top: 2500% !important;
+    width: 100px;
+}
+
+.container {
+    position: relative;
+}
+
+#savedPreview {
+    position: absolute;
+    z-index: 1;
+    left: 62%;
+    top: 42%;
+}
+
+.art-sheet{
+    min-height: 700px;
+}
+
+.puzzle_window{
+    position: absolute;
+    left: 60px;
+    top: 50px;
+}
+
+.settings{
+    position: absolute;
+    left: 77%;
+}
+
+.start_inputs{
+    position: absolute;
+    left: 31%;
+    top: 500%;
+}
+
+.timer {
+    position: absolute;
+    left: 76%;
+    top: 1111%;
 }

@@ -31,8 +31,7 @@ var initGame = function () {
 	var selectedPieces = [];
     var bitmap;
     var startTime;
-	var numberOfMoves = 0;
-    document.getElementById('moves').value = 0;
+	var numberOfSwaps = 0;
 
     var loadImage = function () {
         refresh();
@@ -55,6 +54,8 @@ var initGame = function () {
             };
             fileReader.readAsDataURL(this.files[0]);
         };
+		document.getElementById("playArea").style.display = "block";
+        document.getElementById("timer").style.display = "block";
     };
 
 	var loadThumbnail = function (bitmap) {
@@ -167,7 +168,7 @@ var initGame = function () {
         canvas.height = 500;
         stage.width = canvas.width;
         stage.height = canvas.height;
-		resetNumberOfMoves();
+		resetNumberOfSwaps();
     };
 
     var startGame = function () {
@@ -204,8 +205,8 @@ var initGame = function () {
         });
         piece1.alpha = 1;
         piece2.alpha = 1;
-		numberOfMoves ++;
-		document.getElementById('moves').value = numberOfMoves;
+		numberOfSwaps ++;
+		document.getElementById("swaps").innerHTML = numberOfSwaps;;
     };
 
 	/**
@@ -232,11 +233,18 @@ var initGame = function () {
 		**/
         if (win) {
             var msg = "Level " + gameSettings.level + " Completed !!!" + "\n" + "Go to the next level";
-            if (confirm(msg) == true) {
-                loadNextLevel();
-            } else {
-                window.location.href = "startWindow.html";
+			if(gameSettings.level == 8){
+                alert('Congratulations !!! You Won');
+				restart();
             }
+			else{
+				if (confirm(msg) == true) {
+					loadNextLevel();
+					resetTimer();
+				} else {
+					restart();
+				}
+			}          
         }
     };
 	
@@ -263,6 +271,9 @@ var initGame = function () {
         }
     };
 	
+	/**
+     * Updating elapse time for the game.
+     */
 	var updateTime = function () {
         var now = Math.floor(Date.now() / 1000);
         var diff = now - startTime;
@@ -273,11 +284,21 @@ var initGame = function () {
         document.getElementById("minutes").innerHTML = minutes;
         document.getElementById("seconds").innerHTML = seconds;
     };
+	
+	/**
+     * Resetting Timer.
+     */
+	var resetTimer = function() {
+        startTime = Math.floor(Date.now() / 1000);
+    };
 
     var checkTime= function(val) {
         return val > 9 ? val : "0" + val;
     };
 	
+	/**
+     * Loading next level.
+     */
 	var loadNextLevel = function () {
         gameSettings.level = gameSettings.level + 1;
         gameSettings.piecesX = gameSettings.piecesX + 1;
@@ -292,12 +313,42 @@ var initGame = function () {
         shufflePuzzle();
         drawGridLines();
         stage.update();
+		resetNumberOfSwaps();
+		document.getElementById("swaps").innerHTML = numberOfSwaps;
     };
-
-    var resetNumberOfMoves = function () {
-        numberOfMoves = 0;
-        document.getElementById('moves').value = 0;
+	
+	/**
+     * Reset Number of swaps.
+     */
+    var resetNumberOfSwaps = function () {
+        numberOfSwaps = 0;
+        document.getElementById('swaps').value = 0;
+    };
+	
+	/**
+     * Loading preview.
+     */
+	var loadPreview = function(){ 
+		document.getElementById("savedPreview").style.display = "block";	
+        document.getElementById("savedPreview").style.visibility = "visible";
+		setTimeout(unloadPreview, 3000);
+    };
+	
+	/**
+     * Unloading Preview.
+     */
+	var unloadPreview = function(){
+        document.getElementById("savedPreview").style.visibility = "hidden";
+    };
+	
+	/**
+     * Restart the game.
+     */
+    var restart = function(){
+        window.location.reload();
     };
 	
     uploadButton.addEventListener("change", loadImage, false);
+	document.getElementById("preview").addEventListener("click", loadPreview, false);
+    document.getElementById("startOver").addEventListener("click", restart, false);
 };
