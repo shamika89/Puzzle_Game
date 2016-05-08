@@ -32,20 +32,23 @@ var initGame = function () {
     var bitmap;
     var startTime;
 	var numberOfSwaps = 0;
+	var loadingText;
 
     var loadImage = function () {
         refresh();
         if (this.files && this.files[0]) {
+			startGame();
+			drawLoadingText();
             var fileReader = new FileReader();
             fileReader.onload = function (e) {
                 bitmap = new createjs.Bitmap(e.target.result);
                 bitmap.image.onload = function () {
                     scaleImage(bitmap);
                     loadThumbnail(bitmap);
-					startGame();
                     buildPuzzle(bitmap.image.src);
                     shufflePuzzle();
                     drawGridLines();
+					removeLoadingText();
                     stage.update();
                     startTime = Math.floor(Date.now() / 1000);
                     setInterval(updateTime, 1000);
@@ -278,7 +281,7 @@ var initGame = function () {
         var now = Math.floor(Date.now() / 1000);
         var diff = now - startTime;
         var hours = checkTime(Math.floor((diff / 3600)));
-        var minutes = checkTime(Math.floor(diff / 60));
+        var minutes = checkTime(Math.floor((diff - hours *3600) / 60));
         var seconds = checkTime(Math.floor(diff % 60));
         document.getElementById("hours").innerHTML = hours;
         document.getElementById("minutes").innerHTML = minutes;
@@ -303,15 +306,16 @@ var initGame = function () {
         gameSettings.level = gameSettings.level + 1;
         gameSettings.piecesX = gameSettings.piecesX + 1;
         gameSettings.piecesY = gameSettings.piecesY + 1;
-        uploadButton.removeEventListener("change", loadImage);
         piecesArray.length = 0;
         clearInterval(updateTime());
+		startGame();
         refresh();
         scaleImage(bitmap);
-        startGame();
+		drawLoadingText();
         buildPuzzle(bitmap.image.src);
         shufflePuzzle();
         drawGridLines();
+		removeLoadingText();
         stage.update();
 		resetNumberOfSwaps();
 		document.getElementById("swaps").innerHTML = numberOfSwaps;
@@ -347,6 +351,19 @@ var initGame = function () {
     var restart = function(){
         window.location.reload();
     };
+	
+	var drawLoadingText = function () {
+        loadingText = new createjs.Text("Loading ...", "bold italic 18px Papyrus, fantasy", "#ff7700");
+        loadingText.x = canvas.width / 2 - 50;
+        loadingText.y = canvas.width / 2;
+        stage.addChild(loadingText);
+		stage.update();
+    };
+	
+	var removeLoadingText = function () {
+		stage.removeChild(loadingText);
+		stage.update();
+	};
 	
     uploadButton.addEventListener("change", loadImage, false);
 	document.getElementById("preview").addEventListener("click", loadPreview, false);
